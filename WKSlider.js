@@ -8,6 +8,8 @@
  * http://miniapps.co.uk/license/
  * 
  */
+ 
+/*global document */
 
 function WKSlider(id) {
 
@@ -20,6 +22,7 @@ function WKSlider(id) {
 	this.trackWidth = this.track.offsetWidth;
 	
 	this.element.addEventListener('touchstart', this, false);
+	this.element.addEventListener('mousedown', this, false);
 }
 
 WKSlider.prototype.touchstart = function(e) {
@@ -31,14 +34,14 @@ WKSlider.prototype.touchstart = function(e) {
 	this.element.addEventListener('touchmove', this, false);
 	this.element.addEventListener('touchend', this, false);
 	this.element.addEventListener('touchcancel', this, false);
-},
+};
 
 WKSlider.prototype.touchmove = function(e) {
 
 	e.preventDefault();
 	
 	this.moveKnobTo(e.targetTouches[0].pageX);
-},
+};
 
 WKSlider.prototype.touchend = function(e) {
 
@@ -49,7 +52,7 @@ WKSlider.prototype.touchend = function(e) {
 	this.element.removeEventListener('touchmove', this, false);
 	this.element.removeEventListener('touchend', this, false);
 	this.element.removeEventListener('touchcancel', this, false);
-},
+};
 
 WKSlider.prototype.touchcancel = function(e) {
 
@@ -60,7 +63,34 @@ WKSlider.prototype.touchcancel = function(e) {
 	this.element.removeEventListener('touchmove', this, false);
 	this.element.removeEventListener('touchend', this, false);
 	this.element.removeEventListener('touchcancel', this, false);
-},
+};
+
+WKSlider.prototype.mousedown = function(e) {
+
+	e.preventDefault();
+
+	this.moveKnobTo(e.pageX);
+	
+	this.element.addEventListener('mousemove', this, false);
+	this.element.addEventListener('mouseup', this, false);
+};
+
+WKSlider.prototype.mousemove = function(e) {
+
+	e.preventDefault();
+	
+	this.moveKnobTo(e.pageX);
+};
+
+WKSlider.prototype.mouseup = function(e) {
+
+	e.preventDefault();
+
+	this.moveKnobTo(e.pageX);
+	
+	this.element.removeEventListener('mousemove', this, false);
+	this.element.removeEventListener('mouseup', this, false);
+};
 
 WKSlider.prototype.moveKnobTo = function(x) {
 
@@ -71,15 +101,15 @@ WKSlider.prototype.moveKnobTo = function(x) {
 	
 	var percentage = Math.round(x  / (this.trackWidth - this.knobWidth) * 100);
 	this.callback(percentage);
-},
+};
 
 WKSlider.prototype.callback = function() {
 
-}
+};
 
 WKSlider.prototype.handleEvent = function(e) {
 
-	if (typeof(this[event.type]) === "function" ) {
-		return this[event.type](event);
+	if (typeof(this[e.type]) === 'function' ) {
+		return this[e.type](e);
 	}
-}
+};
